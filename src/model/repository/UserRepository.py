@@ -1,3 +1,5 @@
+from sqlalchemy import text
+
 from src.configuration.config import sql
 from src.model.entity.User import User
 
@@ -8,6 +10,17 @@ class UserRepository:
     def signin(cls, email, password):
         user = sql.session.query(User).filter(User.email == email).filter(User.password == password).first()
         return user
+
+    @classmethod
+    def getUsersWhoPerformedAction(cls, taskId):
+        users = sql.session.query(User, text("quantity")).from_statement(
+            text("SELECT users.*, COUNT(*) AS quantity "
+                 "FROM users "
+                 "JOIN ass_user_task "
+                 "ON ass_user_task.user_id = users.user_id "
+                 "WHERE ass_user_task.task_id = :taskId").params(taskId=taskId)
+        ).all()
+        return users
 
     @classmethod
     def getUserByEmail(cls, email):

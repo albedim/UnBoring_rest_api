@@ -2,6 +2,7 @@ from datetime import timedelta
 from typing import Any
 from flask_jwt_extended import create_access_token
 from src.model.entity.User import User
+from src.model.repository.Ass_User_TaskRepository import Ass_User_TaskRepository
 from src.model.repository.UserRepository import UserRepository
 from src.utils.Constants import Constants
 from src.utils.Utils import Utils
@@ -58,3 +59,11 @@ class UserService:
             return Utils.createWrongResponse(False, InvalidSchemaException), InvalidSchemaException.code
         except Exception as exc:
             return Utils.createWrongResponse(False, GException), GException.code
+
+    @classmethod
+    def getUsers(cls, taskId):
+        users = UserRepository.getUsersWhoPerformedAction(taskId)
+        res = []
+        for user in users:
+            res.append(user[0].toJSON(quantity=user[1]))
+        return Utils.createSuccessResponse(True, res)
