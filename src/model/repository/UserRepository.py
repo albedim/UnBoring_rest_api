@@ -15,6 +15,11 @@ class UserRepository:
         return user
 
     @classmethod
+    def getUserByUserId(cls, userId):
+        user = sql.session.query(User).filter(User.user_id == userId).first()
+        return user
+
+    @classmethod
     def create(cls, name, email, password):
         user = User(name, email, password)
         sql.session.add(user)

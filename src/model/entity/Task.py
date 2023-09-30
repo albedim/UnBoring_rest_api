@@ -16,7 +16,7 @@ class Task(sql.Model):
 
     def toJSON(self, **kvargs):
         obj = {
-            'task_id': self.user_id,
+            'task_id': self.task_id,
             'name': self.name,
             'reported': self.reported,
             'created_on': str(self.created_on)

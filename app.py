@@ -1,5 +1,4 @@
 from flask_jwt_extended import JWTManager
-
 from src.configuration.config import app, sql
 from src.controller import UserController, TaskController, Ass_User_TaskController
 
