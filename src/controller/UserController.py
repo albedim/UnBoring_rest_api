@@ -7,3 +7,8 @@ from src.utils.Utils import Utils
 
 user: Blueprint = Blueprint('UserController', __name__, url_prefix=Utils.getURL('users'))
 
+
+@user.route("/signin", methods=['POST'])
+@cross_origin()
+def signin():
+    return UserService.signin(request.json)

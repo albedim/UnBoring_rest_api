@@ -7,6 +7,7 @@ import smtplib
 from email.message import EmailMessage
 from flask import jsonify
 from src.utils.Constants import Constants
+from src.utils.exceptions.GException import GException
 from src.utils.schema import SCHEMA
 
 
@@ -18,6 +19,27 @@ class Utils:
         for element in elements:
             response.append(element.toJSON())
         return response
+
+    @classmethod
+    def createSuccessResponse(cls, success, param):
+        return jsonify({
+            "date": str(datetime.datetime.now()),
+            "success": success,
+            "param": param,
+            "code": 200,
+        })
+
+    @classmethod
+    def createWrongResponse(cls, success, error):
+        return jsonify({
+            "date": str(datetime.datetime.now()),
+            "success": success,
+            "error": {
+                "message": error.message,
+                "path": error.__class__.__module__
+            },
+            "code": error.code,
+        })
 
     @classmethod
     def createFreeList(cls, elements):
