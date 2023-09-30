@@ -8,9 +8,9 @@ SCHEMA = [
         }
     },
     {
-        "name": "SIGNUP_USER",
+        "name": "USER:SIGNUP",
         "schema": {
-            "complete_name": str,
+            "name": str,
             "email": str,
             "password": str
         }
