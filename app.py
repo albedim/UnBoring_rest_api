@@ -1,9 +1,11 @@
 from flask_jwt_extended import JWTManager
 
 from src.configuration.config import app, sql
-from src.controller import UserController
+from src.controller import UserController, TaskController, Ass_User_TaskController
 
 # controllers init
+app.register_blueprint(TaskController.task)
+app.register_blueprint(Ass_User_TaskController.ass_user_task)
 app.register_blueprint(UserController.user)
 
 # modules init

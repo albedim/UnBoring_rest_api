@@ -1,5 +1,5 @@
 from src.configuration.config import sql
-from src.model.entity.User import User
+from src.model.entity.Task import Task
 
 
 class TaskRepository:
