@@ -1,7 +1,7 @@
 
 SCHEMA = [
     {
-        "name": "SIGNIN_USER",
+        "name": "USER:SIGNIN",
         "schema": {
             "email": str,
             "password": str

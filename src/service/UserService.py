@@ -15,11 +15,11 @@ class UserService:
 
     @classmethod
     def signin(cls, request):
-        user = UserRepository.signin(request['email'], request['password'])
 
         try:
             if not Utils.isValid(request, "USER:SIGNIN"):
                 raise InvalidSchemaException()
+            user = UserRepository.signin(request['email'], request['password'])
             if user is None:
                 raise UserNotFoundException()
             sub = {
@@ -29,9 +29,8 @@ class UserService:
                 'token': create_access_token(identity=sub, expires_delta=timedelta(weeks=4))
             })
         except UserNotFoundException as exc:
-            return Utils.createWrongResponse(False, UserNotFoundException)
+            return Utils.createWrongResponse(False, UserNotFoundException), UserNotFoundException.code
         except InvalidSchemaException as exc:
-            return Utils.createWrongResponse(False, InvalidSchemaException.message
-                                             .replace("{schema}", SCHEMA['USER:SIGNIN']))
+            return Utils.createWrongResponse(False, InvalidSchemaException), InvalidSchemaException.code
         except Exception as exc:
-            return Utils.createWrongResponse(False, GException)
+            return Utils.createWrongResponse(False, GException), GException.code

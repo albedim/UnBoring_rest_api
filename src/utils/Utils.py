@@ -30,13 +30,13 @@ class Utils:
         })
 
     @classmethod
-    def createWrongResponse(cls, success, error):
+    def createWrongResponse(cls, success, error: GException):
         return jsonify({
             "date": str(datetime.datetime.now()),
             "success": success,
             "error": {
                 "message": error.message,
-                "path": error.__class__.__module__
+                "path": error.__module__
             },
             "code": error.code,
         })

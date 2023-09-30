@@ -4,6 +4,9 @@ from flask_sqlalchemy import SQLAlchemy
 from src.utils.Constants import Constants
 from src.utils.Utils import Utils
 from resources.config import config
+from src.utils.exceptions.GException import GException
+from src.utils.exceptions.MethodNotAllowedException import MethodNotAllowedException
+from src.utils.exceptions.NotFoundException import NotFoundException
 
 # modules init
 
@@ -21,14 +24,14 @@ sql = SQLAlchemy(app)
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return Utils.createWrongResponse(False, Constants.PAGE_NOT_FOUND, 404), 404
+    return Utils.createWrongResponse(False, NotFoundException), NotFoundException.code
 
 
 @app.errorhandler(405)
 def page_not_found(e):
-    return Utils.createWrongResponse(False, Constants.PAGE_METHOD_NOT_ALLOWED, 405), 405
+    return Utils.createWrongResponse(False, MethodNotAllowedException), MethodNotAllowedException.code
 
 
 @app.errorhandler(500)
 def page_not_found(e):
-    return Utils.createWrongResponse(False, Constants.PAGE_UNKNOWN_ERROR, 500), 500
+    return Utils.createWrongResponse(False, GException), GException.code
