@@ -17,7 +17,7 @@ def signup():
 @user.route("/task/<taskId>", methods=['GET'])
 @cross_origin()
 def getUsers(taskId):
-    return UserService.getUsers(taskId)
+    return UserService.getUsersWhoPerformedAction(taskId)
 
 
 @user.route("/signin", methods=['POST'])

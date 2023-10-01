@@ -1,15 +1,17 @@
 import datetime
 from src.configuration.config import sql
+from src.utils.Utils import Utils
 
 
 class Task(sql.Model):
     __tablename__ = 'tasks'
-    task_id: int = sql.Column(sql.Integer, primary_key=True)
+    task_id: str = sql.Column(sql.String(14), autoincrement=False, primary_key=True)
     name: str = sql.Column(sql.String(40), nullable=True)
     reported: int = sql.Column(sql.Integer, nullable=False)
     created_on: datetime.date = sql.Column(sql.Date, nullable=True)
 
     def __init__(self, name):
+        self.task_id = Utils.createCode(14)
         self.name = name
         self.reported = 0
         self.created_on = datetime.date.today()

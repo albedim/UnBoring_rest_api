@@ -16,11 +16,10 @@ SCHEMA = [
         }
     },
     {
-        "name": "CHANGE",
+        "name": "USER/TASK:CREATE",
         "schema": {
-            "email": str,
-            "complete_name": str,
-            "password": str
+            "user_id": str,
+            "task_id": str
         }
     },
     {

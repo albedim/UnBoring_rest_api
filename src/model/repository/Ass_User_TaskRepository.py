@@ -12,5 +12,8 @@ class Ass_User_TaskRepository:
         return len(quantity.filter(Ass_User_Task.user_id == userId).all())
 
     @classmethod
-    def create(cls):
-        ...
+    def create(cls, userId, taskId):
+        userTask = Ass_User_Task(userId, taskId)
+        sql.session.add(userTask)
+        sql.session.commit()
+        return userTask
