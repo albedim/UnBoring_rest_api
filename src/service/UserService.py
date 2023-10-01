@@ -61,9 +61,13 @@ class UserService:
             return Utils.createWrongResponse(False, GException), GException.code
 
     @classmethod
-    def getUsers(cls, taskId):
-        users = UserRepository.getUsersWhoPerformedAction(taskId)
-        res = []
-        for user in users:
-            res.append(user[0].toJSON(quantity=user[1]))
-        return Utils.createSuccessResponse(True, res)
+    def getUsersWhoPerformedAction(cls, taskId):
+        try:
+            users = UserRepository.getUsersWhoPerformedAction(taskId)
+            res = []
+            for user in users:
+                res.append(user[0].toJSON(quantity=user[1]))
+            return Utils.createSuccessResponse(True, res)
+
+        except Exception as exc:
+            return Utils.createWrongResponse(False, GException), GException.code
