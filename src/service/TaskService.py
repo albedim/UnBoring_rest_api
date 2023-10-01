@@ -8,6 +8,9 @@ from src.utils.Constants import Constants
 from src.utils.Utils import Utils
 from flask_jwt_extended import decode_token
 
+from src.utils.exceptions.GException import GException
+from src.utils.exceptions.InvalidSchemaException import InvalidSchemaException
+from src.utils.exceptions.UnAuthotizedException import UnAuthorizedException
 from src.utils.exceptions.UserNotFoundException import UserNotFoundException
 
 
@@ -49,5 +52,23 @@ class TaskService:
         except UserNotFoundException as exc:
             return Utils.createWrongResponse(False, UserNotFoundException), UserNotFoundException.code
 
+    @classmethod
+    def create(cls, userAuth, request):
 
+        try:
+            if not Utils.isValid(request, "TASK:CREATE"):
+                raise InvalidSchemaException()
 
+            userId = userAuth['user_id']
+            user = UserRepository.getUserByUserId(userId)
+            if user is None:
+                raise UnAuthorizedException()
+
+            task = TaskRepository.create(request['name'])
+            return Utils.createSuccessResponse(True, task.toJSON())
+        except UnAuthorizedException as exc:
+            return Utils.createWrongResponse(False, UnAuthorizedException), UnAuthorizedException.code
+        except InvalidSchemaException as exc:
+            return Utils.createWrongResponse(False, InvalidSchemaException), InvalidSchemaException.code
+        except Exception as exc:
+            return Utils.createWrongResponse(False, GException), GException.code

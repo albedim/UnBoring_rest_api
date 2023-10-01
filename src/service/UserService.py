@@ -64,9 +64,13 @@ class UserService:
     def getUsersWhoPerformedAction(cls, taskId):
         try:
             users = UserRepository.getUsersWhoPerformedAction(taskId)
+
             res = []
-            for user in users:
-                res.append(user[0].toJSON(quantity=user[1]))
+
+            if len(users) > 1 or (len(users) == 1 and users[0][0] is not None):
+                for user in users:
+                    res.append(user[0].toJSON(quantity=user[1]))
+
             return Utils.createSuccessResponse(True, res)
 
         except Exception as exc:

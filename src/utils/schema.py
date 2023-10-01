@@ -23,10 +23,9 @@ SCHEMA = [
         }
     },
     {
-        "name": "CHANGE_PASSWORD",
+        "name": "TASK:CREATE",
         "schema": {
-            "user_id": int,
-            "password": str
+            "name": str
         }
     }
 ]

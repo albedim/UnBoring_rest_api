@@ -13,6 +13,13 @@ class TaskRepository:
         return task
 
     @classmethod
+    def create(cls, name):
+        task = Task(name)
+        sql.session.add(task)
+        sql.session.commit()
+        return task
+
+    @classmethod
     def getAll(cls):
         tasks = sql.session.query(Task).order_by(random()).limit(5).all()
         return tasks

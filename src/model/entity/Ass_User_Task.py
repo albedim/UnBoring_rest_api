@@ -6,7 +6,7 @@ class Ass_User_Task(sql.Model):
     __tablename__ = 'ass_user_task'
     ass_user_task_id: int = sql.Column(sql.Integer, primary_key=True)
     task_id: str = sql.Column(sql.String(14), nullable=False)
-    user_id: str = sql.Column(sql.Strign(14), nullable=False)
+    user_id: str = sql.Column(sql.String(14), nullable=False)
     created_on: datetime.date = sql.Column(sql.Date, nullable=True)
 
     def __init__(self, user_id, task_id):

@@ -20,7 +20,7 @@ class Ass_User_TaskService:
         try:
 
             if not Utils.isValid(request, "USER/TASK:CREATE"):
-                return InvalidSchemaException()
+                raise InvalidSchemaException()
 
             userAuthId = user['user_id']
             if userAuthId != request['user_id']:
@@ -28,7 +28,7 @@ class Ass_User_TaskService:
 
             task = TaskRepository.get(request['task_id'])
             if task is None:
-                return TaskNotFoundException()
+                raise TaskNotFoundException()
 
             Ass_User_TaskRepository.create(request['user_id'], task.task_id)
             return Utils.createSuccessResponse(True, "Task completed! We hope you're not as bored as before now.")

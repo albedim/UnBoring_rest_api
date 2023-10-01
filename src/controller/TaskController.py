@@ -7,6 +7,13 @@ from src.utils.Utils import Utils
 task: Blueprint = Blueprint('TaskController', __name__, url_prefix=Utils.getURL('tasks'))
 
 
+@task.route("/", methods=['POST'])
+@cross_origin()
+@jwt_required()
+def create():
+    return TaskService.create(get_jwt_identity(), request.json)
+
+
 @task.route("/", methods=['GET'])
 @cross_origin()
 @jwt_required(optional=True)
