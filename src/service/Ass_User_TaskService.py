@@ -18,7 +18,6 @@ class Ass_User_TaskService:
     def create(cls, user, request):
 
         try:
-
             if not Utils.isValid(request, "USER/TASK:CREATE"):
                 raise InvalidSchemaException()
 
@@ -32,6 +31,7 @@ class Ass_User_TaskService:
 
             Ass_User_TaskRepository.create(request['user_id'], task.task_id)
             return Utils.createSuccessResponse(True, "Task completed! We hope you're not as bored as before now.")
+
         except UnAuthorizedException as exc:
             return Utils.createWrongResponse(False, UnAuthorizedException), UnAuthorizedException.code
         except TaskNotFoundException as exc:

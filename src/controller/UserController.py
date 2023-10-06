@@ -14,6 +14,19 @@ def signup():
     return UserService.signup(request.json)
 
 
+@user.route("/sync", methods=['GET'])
+@cross_origin()
+@jwt_required()
+def sync():
+    return UserService.sync(get_jwt_identity())
+
+
+@user.route("/<userId>", methods=['GET'])
+@cross_origin()
+def getUser(userId):
+    return UserService.getUser(userId)
+
+
 @user.route("/task/<taskId>", methods=['GET'])
 @cross_origin()
 def getUsers(taskId):

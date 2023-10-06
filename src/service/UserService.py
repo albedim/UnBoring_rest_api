@@ -8,6 +8,7 @@ from src.utils.Constants import Constants
 from src.utils.Utils import Utils
 from src.utils.exceptions.GException import GException
 from src.utils.exceptions.InvalidSchemaException import InvalidSchemaException
+from src.utils.exceptions.UnAuthotizedException import UnAuthorizedException
 from src.utils.exceptions.UserAlreadyExistsException import UserAlreadyExistsException
 from src.utils.exceptions.UserNotFoundException import UserNotFoundException
 from src.utils.schema import SCHEMA
@@ -73,5 +74,35 @@ class UserService:
 
             return Utils.createSuccessResponse(True, res)
 
+        except Exception as exc:
+            return Utils.createWrongResponse(False, GException), GException.code
+
+    @classmethod
+    def sync(cls, authUser):
+        try:
+            authUserId = authUser['user_id']
+            user = UserRepository.getUserByUserId(authUserId)
+
+            if user is None:
+                raise UnAuthorizedException()
+            return Utils.createSuccessResponse(True, None)
+
+        except UnAuthorizedException as exc:
+            return Utils.createWrongResponse(False, UnAuthorizedException), UnAuthorizedException.code
+        except Exception as exc:
+            return Utils.createWrongResponse(False, GException), GException.code
+
+    @classmethod
+    def getUser(cls, userId):
+        try:
+            user = UserRepository.getUserByUserId(userId)
+
+            if user is None:
+                raise UserNotFoundException()
+
+            return Utils.createSuccessResponse(True, user.toJSON())
+
+        except UserNotFoundException as exc:
+            return Utils.createWrongResponse(False, UserNotFoundException), UserNotFoundException.code
         except Exception as exc:
             return Utils.createWrongResponse(False, GException), GException.code
