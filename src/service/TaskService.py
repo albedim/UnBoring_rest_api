@@ -41,8 +41,8 @@ class TaskService:
 
                 for task in tasks:
                     quantity = Ass_User_TaskRepository.getQuantity(task.task_id)
-                    myQuantity = Ass_User_TaskRepository.getQuantity(task.task_id, userId=user.user_id)
-                    res.append(task.toJSON(quantity=quantity, my_quantity=myQuantity))
+                    userQuantity = Ass_User_TaskRepository.getQuantity(task.task_id, userId=user.user_id)
+                    res.append(task.toJSON(quantity=quantity, user_quantity=userQuantity))
 
                 return Utils.createSuccessResponse(True, {
                     'editable': True,

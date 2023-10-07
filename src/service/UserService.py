@@ -48,6 +48,13 @@ class UserService:
             if user is not None:
                 raise UserAlreadyExistsException()
             user = UserRepository.create(request['name'], request['email'], Utils.hash(request['password']))
+
+            for social in request['social']:
+                key = social
+                value = request['social'][social]
+                if value is not None:
+                    cls.addSocial(user, key, value)
+
             sub = {
                 'user_id': user.user_id
             }
@@ -58,6 +65,22 @@ class UserService:
             return Utils.createWrongResponse(False, UserAlreadyExistsException), UserAlreadyExistsException.code
         except InvalidSchemaException as exc:
             return Utils.createWrongResponse(False, InvalidSchemaException), InvalidSchemaException.code
+        except Exception as exc:
+            print(exc.__str__())
+            return Utils.createWrongResponse(False, GException), GException.code
+
+    @classmethod
+    def getUnboredPeople(cls):
+        try:
+            users = UserRepository.getUnboredPeople()
+
+            res = []
+
+            if len(users) > 1 or (len(users) == 1 and users[0][0] is not None):
+                for user in users:
+                    res.append(user[0].toJSON(quantity=user[1]))
+
+            return Utils.createSuccessResponse(True, Utils.createListOfPages(res, 5))
         except Exception as exc:
             return Utils.createWrongResponse(False, GException), GException.code
 
@@ -91,6 +114,22 @@ class UserService:
             return Utils.createWrongResponse(False, UnAuthorizedException), UnAuthorizedException.code
         except Exception as exc:
             return Utils.createWrongResponse(False, GException), GException.code
+
+    @classmethod
+    def addSocial(cls, user, socialName, socialUrl):
+        social = {
+                'instagram': 'https://instagram.com/',
+                'twitter': 'https://twitter.com/@',
+                'facebook': 'https://facebook.com/people/',
+                'snapchat': 'https://snapchat.com/add/',
+                'tiktok': 'https://tiktok.com/@',
+                'youtube': 'https://youtube.com/@',
+                'telegram': 'https://t.me/'
+        }
+        if socialName in social:
+            print(socialName, socialUrl)
+            setattr(user, socialName, social[socialName] + socialUrl)
+        UserRepository.updateUser(user)
 
     @classmethod
     def getUser(cls, userId):

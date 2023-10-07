@@ -30,7 +30,14 @@ class Ass_User_TaskService:
                 raise TaskNotFoundException()
 
             Ass_User_TaskRepository.create(request['user_id'], task.task_id)
-            return Utils.createSuccessResponse(True, "Task completed! We hope you're not as bored as before now.")
+            quantity = Ass_User_TaskRepository.getQuantity(task.task_id)
+            my_quantity = Ass_User_TaskRepository.getQuantity(task.task_id, userId=user['user_id'])
+            return Utils.createSuccessResponse(True, {
+                'new': {
+                    'quantity': quantity,
+                    'user_quantity': my_quantity
+                }
+            })
 
         except UnAuthorizedException as exc:
             return Utils.createWrongResponse(False, UnAuthorizedException), UnAuthorizedException.code
@@ -39,4 +46,5 @@ class Ass_User_TaskService:
         except InvalidSchemaException as exc:
             return Utils.createWrongResponse(False, InvalidSchemaException), InvalidSchemaException.code
         except Exception as exc:
+            print(exc.__str__())
             return Utils.createWrongResponse(False, GException), GException.code

@@ -21,5 +21,5 @@ class TaskRepository:
 
     @classmethod
     def getAll(cls):
-        tasks = sql.session.query(Task).order_by(random()).limit(5).all()
+        tasks = sql.session.query(Task).order_by(random()).limit(4).all()
         return tasks

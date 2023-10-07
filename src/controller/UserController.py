@@ -37,3 +37,9 @@ def getUsers(taskId):
 @cross_origin()
 def signin():
     return UserService.signin(request.json)
+
+
+@user.route("/", methods=['GET'])
+@cross_origin()
+def get():
+    return UserService.getUnboredPeople()
