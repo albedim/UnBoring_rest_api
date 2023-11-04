@@ -13,12 +13,14 @@ class UserRepository:
 
     @classmethod
     def getUsersWhoPerformedAction(cls, taskId):
-        users = sql.session.query(User, text("quantity")).from_statement(
-            text("SELECT users.*, COUNT(*) AS quantity "
+        users = sql.session.query(User, text("quantity"), text("completed_on")).from_statement(
+            text("SELECT users.*, COUNT(*) AS quantity, MAX(ass_user_task.created_on) AS completed_on "
                  "FROM users "
                  "JOIN ass_user_task "
                  "ON ass_user_task.user_id = users.user_id "
-                 "WHERE ass_user_task.task_id = :taskId").params(taskId=taskId)
+                 "WHERE ass_user_task.task_id = :taskId "
+                 "GROUP BY ass_user_task.user_id "
+                 "ORDER by quantity DESC").params(taskId=taskId)
         ).all()
         return users
 

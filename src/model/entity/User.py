@@ -7,7 +7,6 @@ class User(sql.Model):
     __tablename__ = 'users'
     user_id: int = sql.Column(sql.String(14), primary_key=True, autoincrement=False)
     name: str = sql.Column(sql.String(40), nullable=True)
-    bio: str = sql.Column(sql.String(150), nullable=True)
     instagram: str = sql.Column(sql.String(43), nullable=True)
     twitter: str = sql.Column(sql.String(43), nullable=True)
     facebook: str = sql.Column(sql.String(43), nullable=True)
@@ -29,7 +28,6 @@ class User(sql.Model):
     def toJSON(self, **kvargs):
         obj = {
             'user_id': self.user_id,
-            'bio': self.bio,
             'name': self.name,
             'email': self.email,
             'created_on': self.password,

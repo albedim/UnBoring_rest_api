@@ -43,3 +43,9 @@ def signin():
 @cross_origin()
 def get():
     return UserService.getUnboredPeople()
+
+
+@user.route("/<userId>", methods=['PUT'])
+@cross_origin()
+def update(userId):
+    return UserService.updateUser(userId, request.json)
